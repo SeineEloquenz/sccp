@@ -21,6 +21,7 @@ import sys
 
 search_string = b'vec4 tex = texture2D(texture, texcoord.st);'
 replace_string = b'vec4 tex = texture2D(texture, texcoord.st) * vec4(color.rgb, 1.0);'
+filename_to_patch = 'shaders/gbuffers_water.fsh'
 
 if len(sys.argv) != 2:
     print('You need to supply the file name of the SEUS zip')
@@ -31,7 +32,7 @@ try:
         item: zip.ZipInfo
         for item in zin.infolist():
             buf = zin.read(item.filename)
-            if item.filename == 'shaders/gbuffers_water.fsh':
+            if item.filename == filename_to_patch:
                 buf = buf.replace(search_string, replace_string)
             zout.writestr(item.filename, buf)
     print('Successfully patched conquest!')
